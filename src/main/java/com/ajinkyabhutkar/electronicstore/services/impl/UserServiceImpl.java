@@ -1,5 +1,6 @@
 package com.ajinkyabhutkar.electronicstore.services.impl;
 
+import com.ajinkyabhutkar.electronicstore.dtos.CustomPaging;
 import com.ajinkyabhutkar.electronicstore.dtos.UserDto;
 import com.ajinkyabhutkar.electronicstore.entities.User;
 import com.ajinkyabhutkar.electronicstore.exceptions.ResourceNotFoundException;
@@ -7,6 +8,10 @@ import com.ajinkyabhutkar.electronicstore.repositories.UserRepo;
 import com.ajinkyabhutkar.electronicstore.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -63,13 +68,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getAllUsers() {
+    public CustomPaging<UserDto> getAllUsers(int pageNo, int pageSize, String sortBy, String sortDir) {
 
-        List<User> allUsers=userRepo.findAll();
+        Sort sort = sortDir.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
 
-        List<UserDto> allUsersDto=allUsers.stream().map(user->entityToDto(user)).collect(Collectors.toList());
+        Pageable pageable= PageRequest.of(pageNo,pageSize,sort);
 
-        return allUsersDto;
+       Page<User> allUsers=userRepo.findAll(pageable);
+
+       Page<UserDto> userDtos=allUsers.map(user->modelMapper.map(user,UserDto.class));
+        return  CustomPaging.fromPage(userDtos);
     }
 
     @Override

@@ -1,11 +1,13 @@
 package com.ajinkyabhutkar.electronicstore.controller;
 
 import com.ajinkyabhutkar.electronicstore.dtos.ApiResponse;
+import com.ajinkyabhutkar.electronicstore.dtos.CustomPaging;
 import com.ajinkyabhutkar.electronicstore.dtos.UserDto;
 import com.ajinkyabhutkar.electronicstore.entities.User;
 import com.ajinkyabhutkar.electronicstore.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -55,8 +57,14 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserDto>> getAllusers(){
-        List<UserDto> allUsers=userService.getAllUsers();
+    public ResponseEntity<CustomPaging<UserDto>> getAllUsers(
+            @RequestParam(name = "pageNo",defaultValue = "0",required = false) int pageNo,
+            @RequestParam(name = "size",defaultValue = "3") int size,
+            @RequestParam(name= "sortBy",defaultValue = "name") String sortBy,
+            @RequestParam(name = "sortDir",defaultValue = "asc") String sortDir
+
+    ){
+        CustomPaging<UserDto> allUsers=userService.getAllUsers(pageNo,size,sortBy,sortDir);
         return new ResponseEntity<>(allUsers,HttpStatus.OK);
     }
 
