@@ -1,21 +1,40 @@
 package com.ajinkyabhutkar.electronicstore.dtos;
 
+import com.ajinkyabhutkar.electronicstore.Validate.ImageNameValid;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 
 public class UserDto {
 
     private Long id;
+
+    @Size(min = 3,max = 40,message = "Invalid username!!")
     private String name;
+
+    @Email(message = "invalid email!!")
     private String email;
+
+    @NotBlank(message = "password is required")
     private String password;
+
+    @Size(min = 4,max = 6)
     private String gender;
+
+    @NotBlank(message = "write something about yourself!")
     private String about;
+
+    @ImageNameValid
     private String image;
+
+    //@Patern
+    //Custom validator
 
     public UserDto() {
     }
