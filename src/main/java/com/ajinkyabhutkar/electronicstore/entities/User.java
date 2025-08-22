@@ -5,9 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name = "users")
+@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
 public class User {
 
     @Id
@@ -32,10 +36,13 @@ public class User {
     @Column
     private String image;
 
+    @Column
+    private boolean deleted = false;
+
     public User() {
     }
 
-    public User(Long id, String name, String email, String password, String gender, String about, String image) {
+    public User(Long id, String name, String email, String password, String gender, String about, String image, boolean deleted) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -43,6 +50,7 @@ public class User {
         this.gender = gender;
         this.about = about;
         this.image = image;
+        this.deleted = deleted;
     }
 
     public Long getId() {
@@ -99,5 +107,13 @@ public class User {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

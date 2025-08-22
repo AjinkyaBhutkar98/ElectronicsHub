@@ -2,24 +2,38 @@ package com.ajinkyabhutkar.electronicstore.controller;
 
 import com.ajinkyabhutkar.electronicstore.dtos.ApiResponse;
 import com.ajinkyabhutkar.electronicstore.dtos.CustomPaging;
+import com.ajinkyabhutkar.electronicstore.dtos.FileResponse;
 import com.ajinkyabhutkar.electronicstore.dtos.UserDto;
 import com.ajinkyabhutkar.electronicstore.entities.User;
+import com.ajinkyabhutkar.electronicstore.services.FileUploadService;
 import com.ajinkyabhutkar.electronicstore.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
-    @Autowired
+
     private UserService userService;
+    private FileUploadService fileUploadService;
+
+    @Value("${user.profile.image.path}")
+    private String imageUploadPath;
+
+    @Autowired
+    public UserController(UserService userService, FileUploadService fileUploadService) {
+        this.userService = userService;
+        this.fileUploadService = fileUploadService;
+    }
 
     @PostMapping
     public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto){
@@ -76,5 +90,27 @@ public class UserController {
     @GetMapping("/search/{name}")
     public ResponseEntity<List<UserDto>> getUserByName(@PathVariable String name){
         return new ResponseEntity<>(userService.searchUser(name),HttpStatus.OK);
+    }
+
+    //file upload
+    @PostMapping("/images/{id}")
+    public ResponseEntity<FileResponse> uploadFile(
+            @RequestParam(name = "userImage") MultipartFile file,
+            @PathVariable Long id
+    ) throws IOException {
+
+        UserDto user=userService.getUserById(id);
+        user.setImage(file.getName());
+        UserDto userDto=userService.updateUser(user,id);
+
+        String imageName=fileUploadService.uploadFile(file,imageUploadPath);
+
+        FileResponse fileResponse=new FileResponse();
+        fileResponse.setFileName(imageName);
+        fileResponse.setSuccess(true);
+        fileResponse.setMessege("Image Uploaded Successfully");
+        fileResponse.setHttpStatus(HttpStatus.CREATED);
+
+        return new ResponseEntity<>(fileResponse,HttpStatus.CREATED);
     }
 }
