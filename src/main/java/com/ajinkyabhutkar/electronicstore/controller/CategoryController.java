@@ -1,11 +1,8 @@
 package com.ajinkyabhutkar.electronicstore.controller;
 
-import com.ajinkyabhutkar.electronicstore.dtos.ApiResponse;
-import com.ajinkyabhutkar.electronicstore.dtos.CategoryDto;
-import com.ajinkyabhutkar.electronicstore.dtos.CustomPaging;
-import com.ajinkyabhutkar.electronicstore.dtos.UserDto;
+import com.ajinkyabhutkar.electronicstore.dtos.*;
 import com.ajinkyabhutkar.electronicstore.services.CategoryService;
-import jakarta.persistence.Id;
+import com.ajinkyabhutkar.electronicstore.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +16,9 @@ public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private ProductService productService;
 
     @PostMapping
     public ResponseEntity<CategoryDto> CreateCategory(@RequestBody CategoryDto categoryDto){
@@ -52,7 +52,7 @@ public class CategoryController {
 
 
     @GetMapping
-    public ResponseEntity<CustomPaging<CategoryDto>> getAll(
+    public ResponseEntity<PageableResponse<CategoryDto>> getAll(
             @RequestParam(name = "pageNo",defaultValue = "0",required = false) int pageNo,
             @RequestParam(name = "size",defaultValue = "3") int size,
             @RequestParam(name= "sortBy",defaultValue = "name") String sortBy,
@@ -60,7 +60,7 @@ public class CategoryController {
 
     ){
 
-        CustomPaging<CategoryDto> allCategories=categoryService.getAllCategories(pageNo,size,sortBy,sortDir);
+        PageableResponse<CategoryDto> allCategories=categoryService.getAllCategories(pageNo,size,sortBy,sortDir);
         return new ResponseEntity<>(allCategories,HttpStatus.OK);
     }
 
@@ -75,6 +75,18 @@ public class CategoryController {
         return new ResponseEntity<>(categoryService.searchCategoryByTitle(categoryName),HttpStatus.OK);
     }
 
+    //create product with category
+    @PostMapping("/{categoryId}/products")
+    public ResponseEntity<ProductDto> createProductWithCategory(@RequestBody ProductDto productDto,@PathVariable  Long categoryId){
+        ProductDto productDto1=productService.createWithCategory(productDto,categoryId);
+        return new ResponseEntity<>(productDto,HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{categoryId}/products/{productId}")
+    public ResponseEntity<ProductDto> updateProductWithCategory(@PathVariable Long productId,@PathVariable  Long categoryId){
+        ProductDto product=productService.updateWithCategory(productId,categoryId);
+        return new ResponseEntity<>(product,HttpStatus.CREATED);
+    }
 
 
 

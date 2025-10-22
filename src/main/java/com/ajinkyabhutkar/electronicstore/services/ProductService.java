@@ -1,12 +1,10 @@
 package com.ajinkyabhutkar.electronicstore.services;
 
 
-import com.ajinkyabhutkar.electronicstore.dtos.CustomPaging;
+import com.ajinkyabhutkar.electronicstore.dtos.PageableResponse;
 import com.ajinkyabhutkar.electronicstore.dtos.ProductDto;
-import com.ajinkyabhutkar.electronicstore.entities.Product;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ProductService {
 
@@ -18,11 +16,20 @@ public interface ProductService {
 
     ProductDto getProduct(Long id);
 
-    CustomPaging<ProductDto> getAllProducts(int pageNo, int pageSize, String sortBy, String sortDir);
+    PageableResponse<ProductDto> getAllProducts(int pageNo, int pageSize, String sortBy, String sortDir);
 
     ProductDto updateProduct(ProductDto productDto,Long id);
 
     void deleteProduct(Long id);
+
+    //create product with category
+    ProductDto createWithCategory(ProductDto productDto,Long categoryId);
+
+    //update product with category
+    ProductDto updateWithCategory(Long productId,Long categoryId);
+
+    //get all products with associated category
+    PageableResponse<ProductDto> getAllProductsWithCategory(Long CategoryId,int pageNo,int size,String sortBy,String sortDir);
 
 
 

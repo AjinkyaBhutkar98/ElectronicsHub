@@ -4,7 +4,7 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-public class CustomPaging<T> {
+public class PageableResponse<T> {
 
     private List<T> content;
     private int page;
@@ -13,10 +13,10 @@ public class CustomPaging<T> {
     private int totalPages;
     private boolean isLast;
 
-    public CustomPaging() {
+    public PageableResponse() {
     }
 
-    public CustomPaging(List<T> content, boolean isLast, int totalPages, long totalElements, int size, int page) {
+    public PageableResponse(List<T> content, boolean isLast, int totalPages, long totalElements, int size, int page) {
         this.content = content;
         this.isLast = isLast;
         this.totalPages = totalPages;
@@ -73,8 +73,8 @@ public class CustomPaging<T> {
         isLast = last;
     }
 
-    public static <T> CustomPaging<T> fromPage(Page<T> page) {
-        return new CustomPaging<>(
+    public static <T> PageableResponse<T> fromPage(Page<T> page) {
+        return new PageableResponse<>(
                 page.getContent(),
                 page.isLast(),
                 page.getTotalPages(),

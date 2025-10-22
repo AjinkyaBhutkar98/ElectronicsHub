@@ -1,10 +1,8 @@
 package com.ajinkyabhutkar.electronicstore.services.impl;
 
 import com.ajinkyabhutkar.electronicstore.dtos.CategoryDto;
-import com.ajinkyabhutkar.electronicstore.dtos.CustomPaging;
-import com.ajinkyabhutkar.electronicstore.dtos.UserDto;
+import com.ajinkyabhutkar.electronicstore.dtos.PageableResponse;
 import com.ajinkyabhutkar.electronicstore.entities.Category;
-import com.ajinkyabhutkar.electronicstore.entities.User;
 import com.ajinkyabhutkar.electronicstore.exceptions.ResourceNotFoundException;
 import com.ajinkyabhutkar.electronicstore.repositories.CategoryRepo;
 import com.ajinkyabhutkar.electronicstore.services.CategoryService;
@@ -16,7 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -76,7 +73,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CustomPaging<CategoryDto> getAllCategories(int pageNo, int pageSize, String sortBy, String sortDir) {
+    public PageableResponse<CategoryDto> getAllCategories(int pageNo, int pageSize, String sortBy, String sortDir) {
 
         Sort sort = sortDir.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
 
@@ -85,7 +82,7 @@ public class CategoryServiceImpl implements CategoryService {
         Page<Category> allCategories=categoryRepo.findAll(pageable);
 
         Page<CategoryDto> cateDtos=allCategories.map(category->modelMapper.map(category,CategoryDto.class));
-        return  CustomPaging.fromPage(cateDtos);
+        return  PageableResponse.fromPage(cateDtos);
     }
 
     @Override

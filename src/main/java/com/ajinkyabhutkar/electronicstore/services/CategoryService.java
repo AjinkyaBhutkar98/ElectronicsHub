@@ -1,7 +1,7 @@
 package com.ajinkyabhutkar.electronicstore.services;
 
 import com.ajinkyabhutkar.electronicstore.dtos.CategoryDto;
-import com.ajinkyabhutkar.electronicstore.dtos.CustomPaging;
+import com.ajinkyabhutkar.electronicstore.dtos.PageableResponse;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public interface CategoryService {
     void deleteCategory(Long id);
 
     //get all
-    CustomPaging<CategoryDto> getAllCategories(int pageNo, int pageSize, String sortBy, String sortDir);
+    PageableResponse<CategoryDto> getAllCategories(int pageNo, int pageSize, String sortBy, String sortDir);
 
     //get By Id
     CategoryDto getCategoryById(Long id);

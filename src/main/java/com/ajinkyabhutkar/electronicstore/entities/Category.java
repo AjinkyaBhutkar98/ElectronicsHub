@@ -1,13 +1,24 @@
 package com.ajinkyabhutkar.electronicstore.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="categories")
 @SQLDelete(sql = "UPDATE categories SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Category {
 
     @Id
@@ -26,58 +37,14 @@ public class Category {
     @Column
     private boolean deleted=false;
 
+    //one category can have no of products
+    //cascade type all means if you perform something on category it will reflect the product also
+    //fetch type lazy means don't bring product information
+    @OneToMany(mappedBy = "category",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    List<Product> productList=new ArrayList<>();
+
+
 //    @Transient
 //    private String etcInfo;
 
-
-    public Category() {
-    }
-
-    public Category(String coverImage, Long id, String title, String description, boolean deleted) {
-        this.coverImage = coverImage;
-        Id = id;
-        this.title = title;
-        this.description = description;
-        this.deleted = deleted;
-    }
-
-    public Long getId() {
-        return Id;
-    }
-
-    public void setId(Long id) {
-        Id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getCoverImage() {
-        return coverImage;
-    }
-
-    public void setCoverImage(String coverImage) {
-        this.coverImage = coverImage;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
 }

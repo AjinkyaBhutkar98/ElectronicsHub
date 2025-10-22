@@ -1,6 +1,6 @@
 package com.ajinkyabhutkar.electronicstore.services.impl;
 
-import com.ajinkyabhutkar.electronicstore.dtos.CustomPaging;
+import com.ajinkyabhutkar.electronicstore.dtos.PageableResponse;
 import com.ajinkyabhutkar.electronicstore.dtos.UserDto;
 import com.ajinkyabhutkar.electronicstore.entities.User;
 import com.ajinkyabhutkar.electronicstore.exceptions.ResourceNotFoundException;
@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public CustomPaging<UserDto> getAllUsers(int pageNo, int pageSize, String sortBy, String sortDir) {
+    public PageableResponse<UserDto> getAllUsers(int pageNo, int pageSize, String sortBy, String sortDir) {
 
         Sort sort = sortDir.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
 
@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
        Page<User> allUsers=userRepo.findAll(pageable);
 
        Page<UserDto> userDtos=allUsers.map(user->modelMapper.map(user,UserDto.class));
-        return  CustomPaging.fromPage(userDtos);
+        return  PageableResponse.fromPage(userDtos);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.ajinkyabhutkar.electronicstore.dtos;
 
 
+import com.ajinkyabhutkar.electronicstore.entities.Category;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -42,4 +43,8 @@ public class ProductDto {
     private double discountedPrice;
 
     private int quantity;
+
+    private String productImage;
+
+    private CategoryDto category;
 }

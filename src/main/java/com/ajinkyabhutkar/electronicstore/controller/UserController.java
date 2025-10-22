@@ -1,10 +1,9 @@
 package com.ajinkyabhutkar.electronicstore.controller;
 
 import com.ajinkyabhutkar.electronicstore.dtos.ApiResponse;
-import com.ajinkyabhutkar.electronicstore.dtos.CustomPaging;
+import com.ajinkyabhutkar.electronicstore.dtos.PageableResponse;
 import com.ajinkyabhutkar.electronicstore.dtos.FileResponse;
 import com.ajinkyabhutkar.electronicstore.dtos.UserDto;
-import com.ajinkyabhutkar.electronicstore.entities.User;
 import com.ajinkyabhutkar.electronicstore.services.FileUploadService;
 import com.ajinkyabhutkar.electronicstore.services.UserService;
 import jakarta.validation.Valid;
@@ -71,14 +70,14 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<CustomPaging<UserDto>> getAllUsers(
+    public ResponseEntity<PageableResponse<UserDto>> getAllUsers(
             @RequestParam(name = "pageNo",defaultValue = "0",required = false) int pageNo,
             @RequestParam(name = "size",defaultValue = "3") int size,
             @RequestParam(name= "sortBy",defaultValue = "name") String sortBy,
             @RequestParam(name = "sortDir",defaultValue = "asc") String sortDir
 
     ){
-        CustomPaging<UserDto> allUsers=userService.getAllUsers(pageNo,size,sortBy,sortDir);
+        PageableResponse<UserDto> allUsers=userService.getAllUsers(pageNo,size,sortBy,sortDir);
         return new ResponseEntity<>(allUsers,HttpStatus.OK);
     }
 
