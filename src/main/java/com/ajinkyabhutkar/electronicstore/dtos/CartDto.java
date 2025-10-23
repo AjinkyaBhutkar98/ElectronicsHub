@@ -17,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CartDto {
 
+    private Long id;
     private LocalDateTime createdAt;
     private UserDto user;
     private List<CartItemDto> cartItemList=new ArrayList<>();

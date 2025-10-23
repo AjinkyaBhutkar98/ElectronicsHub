@@ -1,6 +1,7 @@
 package com.ajinkyabhutkar.electronicstore.dtos;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
@@ -12,11 +13,12 @@ public class CreateOrderRequest {
 
     //with this dto user will pass cart id and user id into json instead of url
 
-    @NotBlank(message = "cart id cannot be blank")
+    @NotNull(message = "cart id cannot be blank")
     private Long cartId;
 
-    @NotBlank(message = "user id cannot be blank")
+    @NotNull(message = "user id cannot be blank")
     private Long userId;
+
     private String orderStatus="PENDING";
     private String paymentStatus="NOT_PAID";
 

@@ -6,6 +6,7 @@ import com.ajinkyabhutkar.electronicstore.dtos.OrderDto;
 import com.ajinkyabhutkar.electronicstore.dtos.PageableResponse;
 import com.ajinkyabhutkar.electronicstore.services.OrderService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequestMapping("/orders/api/v1")
 public class OrderController {
 
+    @Autowired
     private OrderService orderService;
 
     @PostMapping
@@ -45,8 +47,8 @@ public class OrderController {
     public ResponseEntity<PageableResponse<OrderDto>> getAllOrders(
             @RequestParam(name = "pageNo",defaultValue = "0",required = false) int pageNo,
             @RequestParam(name = "size",defaultValue = "3") int size,
-            @RequestParam(name= "sortBy",defaultValue = "name") String sortBy,
-            @RequestParam(name = "sortDir",defaultValue = "asc") String sortDir
+            @RequestParam(name= "sortBy",defaultValue = "orderDateTime") String sortBy,
+            @RequestParam(name = "sortDir",defaultValue = "desc") String sortDir
     ){
 
         PageableResponse<OrderDto> response=orderService.getOrders(pageNo,size,sortBy,sortDir);
