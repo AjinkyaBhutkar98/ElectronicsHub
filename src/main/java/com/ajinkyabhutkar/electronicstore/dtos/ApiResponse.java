@@ -1,7 +1,9 @@
 package com.ajinkyabhutkar.electronicstore.dtos;
 
+import lombok.Builder;
 import org.springframework.http.HttpStatus;
 
+@Builder
 public class ApiResponse {
 
     private String messege;

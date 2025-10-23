@@ -4,6 +4,7 @@ import com.ajinkyabhutkar.electronicstore.dtos.AddItemToCartRequest;
 import com.ajinkyabhutkar.electronicstore.dtos.ApiResponse;
 import com.ajinkyabhutkar.electronicstore.dtos.CartDto;
 import com.ajinkyabhutkar.electronicstore.services.CartService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class CartController {
     private CartService cartService;
 
     @PostMapping("/{userId}")
-    public ResponseEntity<CartDto> addItemsToCart(@PathVariable Long userId,@RequestBody AddItemToCartRequest request){
+    public ResponseEntity<CartDto> addItemsToCart(@PathVariable Long userId,@Valid @RequestBody  AddItemToCartRequest request){
 
         CartDto cartDto=cartService.addItemToCart(userId,request);
 
