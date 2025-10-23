@@ -1,9 +1,15 @@
 package com.ajinkyabhutkar.electronicstore.entities;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 //@Table(name = "cart_item")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class CartItem {
 
     @Id
