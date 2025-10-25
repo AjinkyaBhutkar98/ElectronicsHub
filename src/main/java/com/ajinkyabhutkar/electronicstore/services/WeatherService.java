@@ -3,6 +3,7 @@ package com.ajinkyabhutkar.electronicstore.services;
 import com.ajinkyabhutkar.electronicstore.apiresponse.WeatherResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -24,7 +25,7 @@ public class WeatherService {
 
         String finalApi=apiUrl.replace("apiKey",apiKey).replace("City",city);
 
-//        restTemplate.exchange(finalApi, HttpMethod.GET,null, WeatherResponse.class);
+//        ResponseEntity<WeatherResponse> weatherResponseResponseEntity =restTemplate.exchange(finalApi, HttpMethod.GET,null, WeatherResponse.class);
         WeatherResponse weatherResponse=restTemplate.getForObject(finalApi, WeatherResponse.class);
 
         return weatherResponse;
